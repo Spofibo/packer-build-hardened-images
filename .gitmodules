@@ -1,0 +1,4 @@
+[submodule "submodules/ansible-hardening-ubuntu-and-debian"]
+	path = submodules/ansible-hardening-ubuntu-and-debian
+	url = git@github.com:Spofibo/ansible-hardening-ubuntu-and-debian.git
+	branch = master
