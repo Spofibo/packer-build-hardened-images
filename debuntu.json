@@ -1,0 +1,42 @@
+{
+  "variables": {
+    "do_token": "{{ env `DO_TOKEN` }}",
+    "project": "{{ env `PROJECT` }}",
+    "image_ver": "{{ env `IMAGE_VER` }}",
+    "image_name": "{{ user `project` }}-hardened-{{ user `image_ver` }}-{{ timestamp }}"
+  },
+  "sensitive-variables": [
+    "do_token"
+  ],
+  "builders": [
+    {
+      "type": "digitalocean",
+      "ssh_username": "root",
+      "api_token": "{{ user `do_token` }}",
+      "image": "{{ user `image_ver` }}",
+      "region": "fra1",
+      "size": "s-1vcpu-1gb",
+      "snapshot_name": "{{ user `image_name` }}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "cloud-init status --wait"
+      ]
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./submodules/ansible-hardening-ubuntu-and-debian/playbook.yaml",
+      "galaxy_file": "./submodules/ansible-hardening-ubuntu-and-debian/requirements.yaml"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'packer' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
+      "scripts": [
+        "scripts/90-cleanup.sh"
+      ]
+    }
+  ]
+}
