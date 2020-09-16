@@ -41,4 +41,9 @@ dd if=/dev/zero of=/zerofile &
       sleep 5
     done
 sync; rm /zerofile; sync
-cat /dev/null > /var/log/lastlog; cat /dev/null > /var/log/wtmp
+cat /dev/null > /var/log/lastlog
+cat /dev/null > /var/log/wtmp
+cat /dev/null > /var/log/auth.log
+cat /dev/null > /var/log/daemon.log
+cat /dev/null > /var/log/kern.log
+cat /dev/null > /var/log/ufw.log
